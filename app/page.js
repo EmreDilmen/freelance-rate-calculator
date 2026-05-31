@@ -8,6 +8,7 @@ export default function Home() {
   const [weeksOff, setWeeksOff] = useState('')
   const [profitBuffer, setProfitBuffer] = useState('')
   const [result, setResult] = useState(null)
+  const [currency, setCurrency] = useState(null)
 
   function calculate() {
     const monthlyExpenses = parseFloat(expenses)
@@ -37,7 +38,7 @@ export default function Home() {
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Monthly Expenses ($)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Monthly Expenses</label>
             <input
               type="number"
               value={expenses}
@@ -80,6 +81,21 @@ export default function Home() {
             />
           </div>
 
+          <div>
+  <label className="block text-sm font-medium text-gray-700 mb-1">Currency</label>
+  <select
+    value={currency}
+    onChange={e => setCurrency(e.target.value)}
+    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    <option value="$">$ - US Dollar</option>
+    <option value="€">€ - Euro</option>
+    <option value="£">£ - British Pound</option>
+    <option value="₺">₺ - Turkish Lira</option>
+    <option value="¥">¥ - Japanese Yen</option>
+  </select>
+</div>
+
           <button
             onClick={calculate}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition"
@@ -89,11 +105,28 @@ export default function Home() {
         </div>
 
         {result && (
-          <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
-            <p className="text-sm text-blue-600 font-medium">You should charge at least</p>
-            <p className="text-4xl font-bold text-blue-700 mt-1">${result}<span className="text-lg font-medium">/hr</span></p>
-          </div>
-        )}
+  <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
+    <div className="space-y-2 mb-4 text-sm text-gray-600">
+      <div className="flex justify-between">
+        <span>Annual expenses</span>
+        <span className="font-medium">{currency}{(parseFloat(expenses) * 12).toLocaleString()}</span>
+      </div>
+      <div className="flex justify-between">
+        <span>With {profitBuffer}% buffer</span>
+        <span className="font-medium">{currency}{(parseFloat(expenses) * 12 * (1 + parseFloat(profitBuffer) / 100)).toLocaleString()}</span>
+      </div>
+      <div className="flex justify-between">
+        <span>Billable hours/year</span>
+        <span className="font-medium">{currency}{((52 - parseFloat(weeksOff)) * parseFloat(hoursPerWeek)).toLocaleString()}</span>
+      </div>
+      <div className="border-t border-blue-200 pt-2 mt-2"></div>
+    </div>
+    <div className="text-center">
+      <p className="text-sm text-blue-600 font-medium">You should charge at least</p>
+      <p className="text-4xl font-bold text-blue-700 mt-1">{currency}{result}<span className="text-lg font-medium">/hr</span></p>
+    </div>
+  </div>
+)}
       </div>
     </main>
   )
