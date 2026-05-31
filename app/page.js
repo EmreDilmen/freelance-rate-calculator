@@ -9,6 +9,7 @@ export default function Home() {
   const [profitBuffer, setProfitBuffer] = useState('')
   const [result, setResult] = useState(null)
   const [currency, setCurrency] = useState(null)
+  const [dark, setDark] = useState(false)
 
   function calculate() {
     const monthlyExpenses = parseFloat(expenses)
@@ -31,14 +32,22 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-      <div className="bg-white rounded-2xl shadow-md p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">Freelance Rate Calculator</h1>
-        <p className="text-gray-500 text-sm mb-6">Find out what you should charge per hour</p>
+    <main className={`min-h-screen flex items-center justify-center p-6 transition-colors duration-300 ${dark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+      <div className={`rounded-2xl shadow-md p-8 w-full max-w-md transition-colors duration-300 ${dark ? 'bg-gray-800' : 'bg-white'}`}>
+        <div className="flex justify-end mb-4">
+  <button
+    onClick={() => setDark(!dark)}
+    className="text-sm px-3 py-1 rounded-full border transition-colors duration-300 ${dark ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-300 text-gray-500 hover:bg-gray-100'}"
+  >
+    {dark ? '☀️ Light' : '🌙 Dark'}
+  </button>
+</div>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-300 mb-2">Freelance Rate Calculator</h1>
+        <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">Find out what you should charge per hour</p>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Monthly Expenses</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Monthly Expenses</label>
             <input
               type="number"
               value={expenses}
@@ -49,7 +58,7 @@ export default function Home() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Billable Hours Per Week</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Billable Hours Per Week</label>
             <input
               type="number"
               value={hoursPerWeek}
@@ -60,7 +69,7 @@ export default function Home() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Weeks Off Per Year</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Weeks Off Per Year</label>
             <input
               type="number"
               value={weeksOff}
@@ -71,7 +80,7 @@ export default function Home() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Profit Buffer (%)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Profit Buffer (%)</label>
             <input
               type="number"
               value={profitBuffer}
@@ -82,7 +91,7 @@ export default function Home() {
           </div>
 
           <div>
-  <label className="block text-sm font-medium text-gray-700 mb-1">Currency</label>
+  <label className="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">Currency</label>
   <select
     value={currency}
     onChange={e => setCurrency(e.target.value)}
@@ -105,8 +114,8 @@ export default function Home() {
         </div>
 
         {result && (
-  <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
-    <div className="space-y-2 mb-4 text-sm text-gray-600">
+  <div className={`mt-6 border border-blue-200 rounded-xl p-4 ${dark ? 'bg-gray-900' : 'bg-blue-50'}`}>
+    <div className="space-y-2 mb-4 text-sm text-gray-600 dark:text-gray-400">
       <div className="flex justify-between">
         <span>Annual expenses</span>
         <span className="font-medium">{currency}{(parseFloat(expenses) * 12).toLocaleString()}</span>
@@ -122,8 +131,8 @@ export default function Home() {
       <div className="border-t border-blue-200 pt-2 mt-2"></div>
     </div>
     <div className="text-center">
-      <p className="text-sm text-blue-600 font-medium">You should charge at least</p>
-      <p className="text-4xl font-bold text-blue-700 mt-1">{currency}{result}<span className="text-lg font-medium">/hr</span></p>
+      <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">You should charge at least</p>
+      <p className="text-4xl font-bold text-blue-700 dark:text-blue-400 mt-1">{currency}{result}<span className="text-lg font-medium">/hr</span></p>
     </div>
   </div>
 )}
